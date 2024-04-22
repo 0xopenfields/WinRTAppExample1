@@ -13,13 +13,6 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <RestoreSources>
-      https://api.nuget.org/v3/index.json;
-      ../CppWinRTProjection/nuget
-    </RestoreSources>
-  </PropertyGroup>
-
   <ItemGroup>
     <Page Remove="Themes\Generic.xaml" />
   </ItemGroup>
@@ -34,11 +27,36 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <CsWinRTWindowsMetadata>sdk</CsWinRTWindowsMetadata>
+    <CsWinRTGenerateProjection>true</CsWinRTGenerateProjection>
+    <CsWinRTIncludes>
+      CppWinRTComponent;
+      Windows.Foundation;
+    </CsWinRTIncludes>
+    <CsWinRTExcludes>
+      Windows.Foundation.Diagnostics;
+      Windows.Foundation.PropertyType;
+    </CsWinRTExcludes>
+    <CsWinRTEnableLogging>true</CsWinRTEnableLogging>
+  </PropertyGroup>
+
   <ItemGroup>
+    <ProjectReference Include="..\CppWinRTComponent\CppWinRTComponent.vcxproj" />
+    <ProjectReference Include="..\CsWinRTComponent\CsWinRTComponent.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.7" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
-    <PackageReference Include="CppWinRTComponent" Version="0.1.0-prerelease" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
   <!-- 
@@ -48,14 +66,6 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CsWinRTComponent\CsWinRTComponent.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 
   <!-- 
